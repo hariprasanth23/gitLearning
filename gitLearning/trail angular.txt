@@ -1,0 +1,55 @@
+c1-html:
+
+<input type="text" #localCustomerInput>
+
+<button (click)="onAddCustomer(localCustomerInput)">Add Customer</button>
+
+c1-ts:
+
+ @Output() customerCreated = new EventEmitter<{customerName:string}>();
+
+  onAddCustomer(Input:HTMLInputElement){
+    this.customerCreated.emit(
+      {
+        customerName:Input.value
+      }
+    );
+
+  }
+
+------------------------------------------------------------
+c2-html:
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        {{ comingName.name }}
+    </div>
+</div>
+
+c2-ts:
+
+@Input() comingName:{name:string};
+
+----------------------------------------------------------------
+
+app-html:
+
+<h1> Explanation </h1>
+<app-component1
+(customerCreated)="onCustomerAdded($event)"></app-component1>
+
+<app-component2
+*ngFor="let customer of customers"
+[comingName] ="customer"
+></app-component2>
+
+
+app-ts:
+
+ customers=[{name:"HK"}]
+
+  onCustomerAdded(KlovesH:{customerName:string}){
+    this.customers.push({
+      name:KlovesH.customerName
+    });
+  }
